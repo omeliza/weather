@@ -17,8 +17,8 @@ body {
   border-radius: 50px;
   background: linear-gradient(
     90deg,
-    rgba(251, 251, 251, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
+    rgba(0, 212, 255, 1) 35%,
+    rgba(251, 251, 251, 1) 90%
   );
   box-shadow: 4px 4px 2px grey;
 }
@@ -83,6 +83,8 @@ button:active {
 }
 
 .show-more {
+  display: none;
+  justify-content: center;
   min-width: 600px;
   min-height: 300px;
   box-shadow: 4px 4px 2px grey;
@@ -90,6 +92,10 @@ button:active {
 }
 .show-more .day {
   text-align: center;
+}
+.show-more .day:nth-child(even) {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .day .min-temp {
   margin: 10px auto;

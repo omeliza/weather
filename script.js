@@ -34,26 +34,33 @@ class Weather {
       .then((response) => response.json())
       .then((data) => {
         const forecast = data.forecast.forecastday;
-        // forecast.map(el => )
-        document.querySelector('.day .date').insertAdjacentHTML(
-          'beforebegin',
-          `<h3>${forecast[0].date}</h3>
-          <img src='${forecast[0].day.condition.icon}'>
-          <h5>${forecast[0].day.condition.text}</h5>`,
-        );
-        document.querySelector('.day .max-temp').innerHTML =
-          forecast[0].day.maxtemp_c;
-        document.querySelector('.day .min-temp').innerHTML =
-          forecast[0].day.mintemp_c;
-        document.querySelector('.day .avg-humid').innerHTML =
-          forecast[0].day.avghumidity;
-        console.log(data.forecast.forecastday);
+        forecast.reverse().map((el) => {
+          document.querySelector('.show-more').insertAdjacentHTML(
+            'afterbegin',
+            `
+              <div class="day">
+                <div class='date'>
+                  <h3>${el.date}</h3>
+                  <img src='${el.day.condition.icon}'>
+                  <h5>${el.day.condition.text}</h5>
+                </div>
+                <div class="max-temp">${el.day.maxtemp_c}</div>
+                <div class="min-temp">${el.day.mintemp_c}</div>
+                <div class="avg-humid">${el.day.avghumidity}</div>
+              </div>
+            `,
+          );
+        });
       });
+    document.querySelector('.show-more').style.display = 'flex';
+  }
+  activateEvent() {
+    document
+      .querySelector('.show-more-btn')
+      .addEventListener('click', () => this.showMore(), { once: true });
   }
 }
 
 const lviv = new Weather('Lviv', '3');
 lviv.checkForcast();
-document
-  .querySelector('.show-more-btn')
-  .addEventListener('click', lviv.showMore());
+lviv.activateEvent();
