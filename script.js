@@ -2,8 +2,6 @@ class Weather {
   constructor(city, days) {
     this.city = city;
     this.days = days;
-
-    document.querySelector('.city').innerText = this.city;
   }
 
   checkForcast() {
@@ -12,13 +10,13 @@ class Weather {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         const curr = data.current;
-        document.querySelector('.city').insertAdjacentHTML(
-          'afterend',
-          `
+        document.querySelector('.city').innerHTML = `
+        <h2>${data.location.name}</h2>
         <img src='${curr.condition.icon}'>
-        <h5>${curr.condition.text}</h5>`,
-        );
+        <h5>${curr.condition.text}</h5>`;
+
         document.querySelector('.forecast .date').innerHTML = curr.last_updated;
         document.querySelector('.forecast .temperature').innerHTML =
           curr.temp_c;
@@ -26,6 +24,8 @@ class Weather {
           curr.feelslike_c;
         document.querySelector('.forecast .humidity').innerHTML = curr.humidity;
       });
+    document.querySelector('.show-more').style.display === 'flex' &&
+      this.showMore();
   }
   showMore() {
     fetch(
@@ -34,6 +34,9 @@ class Weather {
       .then((response) => response.json())
       .then((data) => {
         const forecast = data.forecast.forecastday;
+        console.log(forecast);
+        let showMoreBlock = document.querySelector('.show-more');
+        showMoreBlock.textContent = '';
         forecast.reverse().map((el) => {
           document.querySelector('.show-more').insertAdjacentHTML(
             'afterbegin',
@@ -51,7 +54,8 @@ class Weather {
             `,
           );
         });
-      });
+      })
+      .catch((e) => console.log(e));
     document.querySelector('.show-more').style.display = 'flex';
   }
   activateEvent() {
@@ -61,6 +65,17 @@ class Weather {
   }
 }
 
-const lviv = new Weather('Lviv', '3');
-lviv.checkForcast();
-lviv.activateEvent();
+let city = new Weather('Lviv', '3');
+city.checkForcast();
+city.activateEvent();
+
+const search = document.querySelector('#city-search');
+search.addEventListener('blur', () => {
+  if (search.value.length) {
+    let capitalize =
+      search.value.charAt(0).toUpperCase() + search.value.slice(1);
+    city = new Weather(capitalize, '3');
+    city.checkForcast();
+    city.activateEvent();
+  }
+});

@@ -12,17 +12,46 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  position: relative;
   width: 300px;
   min-height: 300px;
   border-radius: 50px;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 212, 255, 1) 35%,
-    rgba(251, 251, 251, 1) 90%
-  );
   box-shadow: 4px 4px 2px grey;
+  background: linear-gradient(to bottom right, #7ee8fa, #eec0c6);
 }
 
+.hint {
+  position: absolute;
+  display: none;
+  width: 180px;
+  padding: 10px;
+  z-index: 1;
+  background-color: #eec0c6;
+  border-radius: 20px;
+  top: -45px;
+}
+
+#city-search {
+  background: transparent;
+  border: 2px solid #ffffff;
+  margin-top: 20px;
+  border-radius: 20px;
+  height: 40px;
+  padding-left: 10px;
+}
+#city-search:focus {
+  outline: none;
+}
+#city-search:focus + .hint {
+  display: block;
+}
+.widget .city {
+  margin: 0;
+  text-align: center;
+}
+.city > h5 {
+  margin-top: 0;
+}
 .forecast {
   text-align: center;
 }
@@ -69,7 +98,7 @@ button {
   height: 40px;
   background-color: white;
   opacity: 0.5;
-  border: 2px solid skyblue;
+  border: 2px solid white;
   border-radius: 30px;
   cursor: pointer;
   margin-bottom: 20px;
@@ -89,6 +118,9 @@ button:active {
   min-height: 300px;
   box-shadow: 4px 4px 2px grey;
   padding: 10px 20px;
+  background-color: rgba(211, 211, 211, 0.2);
+  margin-left: 20px;
+  border-radius: 30px;
 }
 .show-more .day {
   text-align: center;
