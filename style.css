@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 300px;
+  min-height: 300px;
+  border-radius: 50px;
+  background: linear-gradient(
+    90deg,
+    rgba(251, 251, 251, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  box-shadow: 4px 4px 2px grey;
+}
+
+.forecast {
+  text-align: center;
+}
+.forecast > ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.forecast > ul li {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  list-style: none;
+}
+
+.forecast .date::before {
+  content: 'Last updated: ';
+  font-weight: 600;
+}
+.forecast .temperature::before {
+  content: 'Temperature: ';
+  font-weight: 600;
+}
+.forecast .feelslike::before {
+  content: 'Feels like: ';
+  font-weight: 600;
+}
+.forecast .humidity::before {
+  content: 'Humidity: ';
+  font-weight: 600;
+}
+.forecast .temperature::after,
+.forecast .feelslike::after,
+.day .max-temp::after,
+.day .min-temp::after {
+  content: ' \2103';
+}
+.forecast .humidity::after,
+.day .avg-humid::after {
+  content: ' %';
+}
+button {
+  width: 100px;
+  height: 40px;
+  background-color: white;
+  opacity: 0.5;
+  border: 2px solid skyblue;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+button:hover {
+  opacity: 1;
+  box-shadow: 4px 4px 2px grey;
+}
+button:active {
+  box-shadow: none;
+}
+
+.show-more {
+  min-width: 600px;
+  min-height: 300px;
+  box-shadow: 4px 4px 2px grey;
+  padding: 10px 20px;
+}
+.show-more .day {
+  text-align: center;
+}
+.day .min-temp {
+  margin: 10px auto;
+}
+.day .max-temp::before {
+  content: 'Max temperature: ';
+}
+.day .min-temp::before {
+  content: 'Min temperature: ';
+}
+.day .avg-humid::before {
+  content: 'Average humidity: ';
+}
