@@ -1,6 +1,8 @@
-body {
+* {
   margin: 0;
   padding: 0;
+}
+body {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -38,6 +40,7 @@ body {
   border-radius: 20px;
   height: 40px;
   padding-left: 10px;
+  margin-bottom: 30px;
 }
 #city-search:focus {
   outline: none;
@@ -51,11 +54,12 @@ body {
 }
 .city > h5 {
   margin-top: 0;
+  margin-bottom: 20px;
 }
 .forecast {
   text-align: center;
 }
-.forecast > ul {
+ul {
   list-style-type: none;
   padding-left: 0;
   margin-top: 0;
@@ -102,6 +106,7 @@ button {
   border-radius: 30px;
   cursor: pointer;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 button:hover {
   opacity: 1;
@@ -114,10 +119,11 @@ button:active {
 .show-more {
   display: none;
   justify-content: center;
+  align-items: center;
   min-width: 600px;
   min-height: 300px;
   box-shadow: 4px 4px 2px grey;
-  padding: 10px 20px;
+  padding: 20px;
   background-color: rgba(211, 211, 211, 0.2);
   margin-left: 20px;
   border-radius: 30px;
@@ -125,9 +131,9 @@ button:active {
 .show-more .day {
   text-align: center;
 }
-.show-more .day:nth-child(even) {
-  padding-left: 20px;
-  padding-right: 20px;
+.show-more div:nth-child(2) {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .day .min-temp {
   margin: 10px auto;
@@ -140,4 +146,42 @@ button:active {
 }
 .day .avg-humid::before {
   content: 'Average humidity: ';
+}
+details {
+  text-align: center;
+}
+details > summary {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  list-style: none;
+  font-size: 12px;
+  position: relative;
+}
+summary::after {
+  content: '\276F';
+  transform: rotate(90deg);
+  transition-duration: 0.3s;
+  display: inline-block;
+  position: absolute;
+  right: 17px;
+  bottom: -2px;
+  cursor: pointer;
+}
+
+.day h5 {
+  margin-bottom: 20px;
+}
+details li::after {
+  content: ' \2103';
+}
+details li {
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+details li:last-child {
+  padding-bottom: 0;
+}
+details[open] summary::after {
+  transform: rotate(-90deg);
+  transition-duration: 0.3s;
 }

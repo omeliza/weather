@@ -10,7 +10,6 @@ class Weather {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const curr = data.current;
         document.querySelector('.city').innerHTML = `
         <h2>${data.location.name}</h2>
@@ -34,28 +33,46 @@ class Weather {
       .then((response) => response.json())
       .then((data) => {
         const forecast = data.forecast.forecastday;
-        console.log(forecast);
         let showMoreBlock = document.querySelector('.show-more');
         showMoreBlock.textContent = '';
         forecast.reverse().map((el) => {
           document.querySelector('.show-more').insertAdjacentHTML(
             'afterbegin',
             `
-              <div class="day">
-                <div class='date'>
-                  <h3>${el.date}</h3>
-                  <img src='${el.day.condition.icon}'>
-                  <h5>${el.day.condition.text}</h5>
+              <div>
+                <div class="day">
+                  <div class='date'>
+                    <h3>${el.date}</h3>
+                    <img src='${el.day.condition.icon}'>
+                    <h5>${el.day.condition.text}</h5>
+                  </div>
+                  <div class="max-temp">${el.day.maxtemp_c}</div>
+                  <div class="min-temp">${el.day.mintemp_c}</div>
+                  <div class="avg-humid">${el.day.avghumidity}</div>
                 </div>
-                <div class="max-temp">${el.day.maxtemp_c}</div>
-                <div class="min-temp">${el.day.mintemp_c}</div>
-                <div class="avg-humid">${el.day.avghumidity}</div>
+                <details>
+                  <summary><i>Show hourly temperature</i></summary>
+                  <ul>
+                    <li>00:00:&ensp; ${el.hour[0].temp_c}</li>
+                    <li>02:00:&ensp; ${el.hour[2].temp_c}</li>
+                    <li>04:00:&ensp; ${el.hour[4].temp_c}</li>
+                    <li>06:00:&ensp; ${el.hour[6].temp_c}</li>
+                    <li>08:00:&ensp; ${el.hour[8].temp_c}</li>
+                    <li>10:00:&ensp; ${el.hour[10].temp_c}</li>
+                    <li>12:00:&ensp; ${el.hour[12].temp_c}</li>
+                    <li>14:00:&ensp; ${el.hour[14].temp_c}</li>
+                    <li>16:00:&ensp; ${el.hour[16].temp_c}</li>
+                    <li>18:00:&ensp; ${el.hour[18].temp_c}</li>
+                    <li>20:00:&ensp; ${el.hour[20].temp_c}</li>
+                    <li>22:00:&ensp; ${el.hour[22].temp_c}</li>
+                  </ul>
+                </details>
               </div>
             `,
           );
         });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e.message));
     document.querySelector('.show-more').style.display = 'flex';
   }
   activateEvent() {
