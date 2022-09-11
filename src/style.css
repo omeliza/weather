@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 body {
   width: 100vw;
@@ -127,6 +128,17 @@ button:active {
   background-color: rgba(211, 211, 211, 0.2);
   margin-left: 20px;
   border-radius: 30px;
+  position: relative;
+  top: 0;
+}
+.close {
+  content: '\2718';
+  color: crimson;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  transform: scale(1.2);
+  cursor: pointer;
 }
 .show-more .day {
   text-align: center;
