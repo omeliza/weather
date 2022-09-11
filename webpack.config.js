@@ -3,6 +3,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -57,6 +58,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: filename('css'),
     }),
+    new Dotenv({ safe: true }),
   ],
   module: {
     rules: [
@@ -93,7 +95,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-typescript'],
+              presets: ['@babel/preset-env', '@babel/preset-typescript'],
             },
           },
         ],

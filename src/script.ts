@@ -1,4 +1,5 @@
 import './style.css';
+console.log(process.env.KEY);
 
 interface IForcastday {
   date: string;
@@ -33,7 +34,7 @@ class Weather {
     const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
 
     fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=4840c1644aa04a3694f140934220609&q=${this.city}&aqi=no`,
+      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.KEY}&q=${this.city}&aqi=no`,
     )
       .then((response) => response.json())
       .then((data) => {
@@ -64,7 +65,7 @@ class Weather {
   showMore() {
     const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
     fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=4840c1644aa04a3694f140934220609&q=${this.city}&days=${this.days}&aqi=no`,
+      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.KEY}&q=${this.city}&days=${this.days}&aqi=no`,
     )
       .then((response) => response.json())
       .then((data) => {
