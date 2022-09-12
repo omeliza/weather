@@ -23,17 +23,6 @@ body {
   background: linear-gradient(to bottom right, #7ee8fa, #eec0c6);
 }
 
-.hint {
-  position: absolute;
-  display: none;
-  width: 180px;
-  padding: 10px;
-  z-index: 1;
-  background-color: #eec0c6;
-  border-radius: 20px;
-  top: -45px;
-}
-
 #city-search {
   background: transparent;
   border: 2px solid #ffffff;
