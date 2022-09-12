@@ -1,19 +1,10 @@
-import './style.css';
-console.log(process.env.KEY);
+import '../style.css';
 
-interface IForcastday {
-  date: string;
-  day: {
-    condition: { icon: string; text: string };
-    maxtemp_c: string;
-    mintemp_c: string;
-    avghumidity: string;
-  };
-  hour: { temp_c: string }[];
-}
+import { enableSearch, ForcastServices } from './utils';
 
-class Weather {
+export class Weather {
   city: string;
+
   days: string;
 
   constructor(city: string, days: string) {
@@ -21,7 +12,7 @@ class Weather {
     this.days = days;
   }
 
-  checkForcast() {
+  async checkForcast() {
     const city = document.querySelector<HTMLElement>('.city');
     const date = document.querySelector<HTMLElement>('.forecast .date');
     const temperature = document.querySelector<HTMLElement>(
@@ -31,61 +22,65 @@ class Weather {
       '.forecast .feelslike',
     );
     const humidity = document.querySelector<HTMLElement>('.forecast .humidity');
-    const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
 
-    fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.KEY}&q=${this.city}&aqi=no`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const curr = data.current;
+    try {
+      const res = await ForcastServices.getDayForcast(this.city);
+      if (res.status === 200) {
+        const current = res.data.current;
+        const location = res.data.location;
+
         if (city)
           city.innerHTML = `
-            <h2>${data.location.name}</h2>
-            <img src='${curr.condition.icon}'>
-            <h5>${curr.condition.text}</h5>
+            <h2>${location.name}</h2>
+            <img src='${current.condition.icon}'>
+            <h5>${current.condition.text}</h5>
           `;
         if (date) {
-          date.innerHTML = curr.last_updated;
+          date.innerHTML = current.last_updated;
         }
         if (temperature) {
-          temperature.innerHTML = curr.temp_c;
+          temperature.innerHTML = String(current.temp_c);
         }
         if (feelslike) {
-          feelslike.innerHTML = curr.feelslike_c;
+          feelslike.innerHTML = String(current.feelslike_c);
         }
         if (humidity) {
-          humidity.innerHTML = curr.humidity;
+          humidity.innerHTML = String(current.humidity);
         }
-      });
-    if (showMoreBlock) {
-      showMoreBlock.style.display === 'flex';
+      } else {
+        console.log('Oops...Something went wrong!');
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log({ error: error.message });
+      }
     }
   }
-  showMore() {
+
+  async showMore() {
     const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
-    fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.KEY}&q=${this.city}&days=${this.days}&aqi=no`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const forecast = data.forecast.forecastday;
+    try {
+      const res = await ForcastServices.getThreeDayForcast(
+        this.city,
+        this.days,
+      );
+      if (res.status === 200) {
+        const forecast = res.data.forecast.forecastday;
+
         if (showMoreBlock) {
           showMoreBlock.textContent = '';
           showMoreBlock.insertAdjacentHTML(
             'beforeend',
-            `<div class='close'>&#10008;</div>`,
+            "<div class='close'>&#10008;</div>",
           );
         }
 
         const close = document.querySelector('.close');
         close?.addEventListener('click', () => {
-          const showMoreBlock =
-            document.querySelector<HTMLElement>('.show-more');
           if (showMoreBlock) showMoreBlock.style.display = 'none';
         });
 
-        forecast.reverse().map((el: IForcastday) => {
+        forecast.reverse().map((el) => {
           if (showMoreBlock !== null) {
             showMoreBlock.insertAdjacentHTML(
               'afterbegin',
@@ -124,12 +119,19 @@ class Weather {
             showMoreBlock.style.display = 'flex';
           }
         });
-      })
-      .catch((e) => console.log(e.message));
+      } else {
+        console.log('Oops...Something went wrong!');
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log({ error: error.message });
+      }
+    }
   }
 }
 
-let city = new Weather('Lviv', '3');
+const city = new Weather('Lviv', '3');
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 city.checkForcast();
 
 (function () {
@@ -137,18 +139,11 @@ city.checkForcast();
   if (btn) btn.addEventListener('click', () => city.showMore());
 
   const search = document.querySelector<HTMLInputElement>('#city-search');
-  const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
 
-  search?.addEventListener('blur', () => {
-    if (search.value.length) {
-      let capitalize =
-        search.value.charAt(0).toUpperCase() + search.value.slice(1);
-      city = new Weather(capitalize, '3');
-      city.checkForcast();
-      if (showMoreBlock?.style.display === 'flex') {
-        city.showMore();
-      }
-      search.value = '';
+  search?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      enableSearch();
     }
   });
+  search?.addEventListener('blur', enableSearch);
 })();

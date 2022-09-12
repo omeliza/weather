@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -26,7 +27,7 @@ const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
-  entry: './script.ts',
+  entry: './scripts/index.ts',
   output: {
     filename: filename('js'),
     path: path.resolve(__dirname, 'dist'),
@@ -59,6 +60,7 @@ module.exports = {
       filename: filename('css'),
     }),
     new Dotenv({ safe: true }),
+    new ESLintPlugin(),
   ],
   module: {
     rules: [

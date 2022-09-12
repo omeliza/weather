@@ -5,7 +5,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
+    "lint": "eslint **/*.ts --ignore-pattern node_modules/",
+    "lint:fix": "eslint **/*.ts --ignore-pattern node_modules/ --fix",
+    "lint:format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -21,13 +25,21 @@
     "@babel/core": "^7.19.0",
     "@babel/preset-env": "^7.19.0",
     "@babel/preset-typescript": "^7.18.6",
+    "@typescript-eslint/eslint-plugin": "5.36.2",
+    "@typescript-eslint/parser": "5.36.2",
     "babel-loader": "^8.2.5",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
+    "eslint": "8.23.1",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-webpack-plugin": "3.2.0",
     "html-loader": "^4.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "13.0.3",
     "mini-css-extract-plugin": "^2.6.1",
+    "prettier": "2.7.1",
     "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.3.1",
     "typescript": "^4.8.3",
@@ -36,6 +48,14 @@
     "webpack-dev-server": "^4.11.0"
   },
   "dependencies": {
+    "axios": "0.27.2",
     "dotenv-webpack": "^8.0.1"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "eslint"
+    ]
   }
 }
