@@ -1,6 +1,6 @@
 import '../style.css';
 
-import { enableSearch, ForcastServices } from './utils';
+import { enableSearch, errorHandler, ForcastServices } from './utils';
 
 export class Weather {
   city: string;
@@ -28,7 +28,6 @@ export class Weather {
       if (res.status === 200) {
         const current = res.data.current;
         const location = res.data.location;
-
         if (city)
           city.innerHTML = `
             <h2>${location.name}</h2>
@@ -48,17 +47,18 @@ export class Weather {
           humidity.innerHTML = String(current.humidity);
         }
       } else {
-        console.log('Oops...Something went wrong!');
+        errorHandler();
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log({ error: error.message });
+        errorHandler();
       }
     }
   }
 
   async showMore() {
     const showMoreBlock = document.querySelector<HTMLElement>('.show-more');
+
     try {
       const res = await ForcastServices.getThreeDayForcast(
         this.city,
@@ -120,19 +120,19 @@ export class Weather {
           }
         });
       } else {
-        console.log('Oops...Something went wrong!');
+        errorHandler();
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log({ error: error.message });
+        errorHandler();
       }
     }
   }
 }
 
 const city = new Weather('Lviv', '3');
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-city.checkForcast();
+
+city.checkForcast().catch(() => errorHandler());
 
 (function () {
   const btn = document.querySelector<HTMLButtonElement>('.show-more-btn');
@@ -140,9 +140,15 @@ city.checkForcast();
 
   const search = document.querySelector<HTMLInputElement>('#city-search');
 
-  search?.addEventListener('keypress', (e) => {
+  search?.addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
-      enableSearch();
+      try {
+        await enableSearch();
+      } catch (error) {
+        if (error instanceof Error) {
+          errorHandler();
+        }
+      }
     }
   });
   search?.addEventListener('blur', enableSearch);
